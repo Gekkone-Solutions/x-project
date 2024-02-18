@@ -1,0 +1,80 @@
+{
+  "log": {
+    "loglevel": "none",
+    "dnsLog": false
+  },
+  "routing": {
+    "rules": [
+      {
+        "domain": [
+          "regexp:\\.ru$",
+          "regexp:\\.xn--p1ai$",
+          "regexp:\\.su$"
+        ],
+        "outboundTag": "block"
+      },
+      {
+        "ip": [
+          "geoip:ru"
+        ],
+        "outboundTag": "block"
+      },
+      {
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "block"
+      }
+    ],
+    "domainStrategy": "AsIs"
+  },
+  "dns": {
+    "servers": [
+      "https://1.1.1.1/dns-query",
+      "https://8.8.8.8/dns-query"
+    ]
+  },
+  "inbounds": [
+    {
+      "port": 443,
+      "protocol": "vless",
+      "tag": "vless_tls",
+      "settings": {
+        "clients": [],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "dest": "nginx-proxy:8443",
+          "xver": 0,
+          "serverNames": [],
+          "privateKey": "",
+          "minClientVer": "",
+          "maxClientVer": "",
+          "maxTimeDiff": 0,
+          "shortIds": []
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "block"
+    }
+  ]
+}

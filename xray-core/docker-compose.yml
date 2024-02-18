@@ -1,5 +1,0 @@
-services:
-  xray: 
-    image: gekkone/xray-core:latest
-    volumes: 
-      - ./docker/xray:/etc/xray
